@@ -9,23 +9,28 @@ main = do
   contents <- hGetContents handle
 
   putStrLn "Part I:"
-  print $ sum $ zipWith (\a b -> abs (a - b)) (sort (column 0 contents)) (sort (column 1 contents))
+  print $
+    sum $
+      zipWith
+        (\a b -> abs (a - b))
+        (sort (column 0 contents))
+        (sort (column 1 contents))
 
   putStrLn "Part II:"
-  print $ getSum $ foldHashMap $ buildHashMap HashMap.empty (column 0 contents) (column 1 contents) 0
+  print $
+    getSum $
+      HashMap.foldMapWithKey
+        (\x y -> Sum (x * y))
+        ( foldr
+            (HashMap.adjust (+ 1))
+            (initHashMap HashMap.empty (column 0 contents) 0)
+            (column 1 contents)
+        )
 
   hClose handle
 
-foldHashMap :: HashMap.HashMap Int Int -> Sum Int
-foldHashMap = HashMap.foldMapWithKey (\x y -> Sum (x * y))
-
-buildHashMap :: HashMap.HashMap Int Int -> [Int] -> [Int] -> Int -> HashMap.HashMap Int Int
-buildHashMap hashmap column1 column2 i
-  | HashMap.null hashmap = buildHashMap (initHashMap hashmap column1 0) column1 column2 i
-  | i >= length column2 = hashmap
-  | otherwise = buildHashMap (HashMap.adjust (+ 1) (column2 !! i) hashmap) column1 column2 (i + 1)
-
-initHashMap :: HashMap.HashMap Int Int -> [Int] -> Int -> HashMap.HashMap Int Int
+initHashMap ::
+  HashMap.HashMap Int Int -> [Int] -> Int -> HashMap.HashMap Int Int
 initHashMap hashmap list i
   | i >= length list = hashmap
   | otherwise = initHashMap (HashMap.insert (list !! i) 0 hashmap) list (i + 1)

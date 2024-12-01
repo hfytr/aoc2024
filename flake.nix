@@ -18,7 +18,7 @@
         cabal-install
         haskell-language-server
         haskellPackages.hlint
-        ormolu
+        haskellPackages.fourmolu
       ];
     };
   };
