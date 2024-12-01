@@ -1,5 +1,6 @@
+import qualified Data.HashMap.Strict as HashMap
 import Data.List (sort)
-import GHC.Base (eqInt)
+import Data.Monoid
 import System.IO
 
 main :: IO ()
@@ -8,22 +9,26 @@ main = do
   contents <- hGetContents handle
 
   putStrLn "Part I:"
-  print $ sum $ zipWith diff (column 0 (lines contents)) (column 1 (lines contents))
+  print $ sum $ zipWith (\a b -> abs (a - b)) (sort (column 0 contents)) (sort (column 1 contents))
 
   putStrLn "Part II:"
-  -- slow O(n^2) way
-  print $ sum $ map (entrySimScore (column 1 (lines contents))) (column 0 (lines contents))
+  print $ getSum $ foldHashMap $ buildHashMap HashMap.empty (column 0 contents) (column 1 contents) 0
 
   hClose handle
 
-entrySimScore :: [Int] -> Int -> Int
-entrySimScore list a = a * length (filter (eqInt a) list)
+foldHashMap :: HashMap.HashMap Int Int -> Sum Int
+foldHashMap = HashMap.foldMapWithKey (\x y -> Sum (x * y))
 
-diff :: Int -> Int -> Int
-diff a b = abs $ a - b
+buildHashMap :: HashMap.HashMap Int Int -> [Int] -> [Int] -> Int -> HashMap.HashMap Int Int
+buildHashMap hashmap column1 column2 i
+  | HashMap.null hashmap = buildHashMap (initHashMap hashmap column1 0) column1 column2 i
+  | i >= length column2 = hashmap
+  | otherwise = buildHashMap (HashMap.adjust (+ 1) (column2 !! i) hashmap) column1 column2 (i + 1)
 
-column :: Int -> [String] -> [Int]
-column col lines_ = sort (map (parseLine col) lines_)
+initHashMap :: HashMap.HashMap Int Int -> [Int] -> Int -> HashMap.HashMap Int Int
+initHashMap hashmap list i
+  | i >= length list = hashmap
+  | otherwise = initHashMap (HashMap.insert (list !! i) 0 hashmap) list (i + 1)
 
-parseLine :: Int -> String -> Int
-parseLine col line = read (words line !! col)
+column :: Int -> String -> [Int]
+column col contents = map (\line -> read (words line !! col)) (lines contents)
