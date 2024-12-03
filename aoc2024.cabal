@@ -33,3 +33,11 @@ executable day02
         base ^>=4.18.2.1,
     hs-source-dirs:   src
     default-language: GHC2021
+
+executable day03
+    import:           warnings
+    main-is:          3.hs
+    build-depends:
+        base ^>=4.18.2.1,
+    hs-source-dirs:   src
+    default-language: GHC2021
