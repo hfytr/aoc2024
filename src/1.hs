@@ -1,5 +1,6 @@
-import qualified Data.HashMap.Strict as HashMap
 import Data.List (sort)
+import Data.Map (Map)
+import Data.Map qualified as Map
 import Data.Monoid
 import System.IO
 
@@ -19,21 +20,21 @@ main = do
   putStrLn "Part II:"
   print $
     getSum $
-      HashMap.foldMapWithKey
+      Map.foldMapWithKey
         (\x y -> Sum (x * y))
         ( foldr
-            (HashMap.adjust (+ 1))
-            (initHashMap HashMap.empty (column 0 contents) 0)
+            (Map.adjust (+ 1))
+            (initMap Map.empty (column 0 contents) 0)
             (column 1 contents)
         )
 
   hClose handle
 
-initHashMap ::
-  HashMap.HashMap Int Int -> [Int] -> Int -> HashMap.HashMap Int Int
-initHashMap hashmap list i
+initMap ::
+  Map Int Int -> [Int] -> Int -> Map Int Int
+initMap hashmap list i
   | i >= length list = hashmap
-  | otherwise = initHashMap (HashMap.insert (list !! i) 0 hashmap) list (i + 1)
+  | otherwise = initMap (Map.insert (list !! i) 0 hashmap) list (i + 1)
 
 column :: Int -> String -> [Int]
 column col contents = map (\line -> read (words line !! col)) (lines contents)
