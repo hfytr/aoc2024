@@ -12,7 +12,7 @@ main = do
     n = (length . head) input
     m = listArray (0, length input - 1) [listArray (0, n - 1) line | line <- input]
   putStrLn "Part I:"
-  print $ solvep1 $ lines contents
+  print $ solvep1 input
   putStrLn "Part II:"
   print $ solvep2 m
 
