@@ -12,7 +12,7 @@ solve ops list = sum $ map fst $ filter (\(t, l) -> checkLine ops (head l) t (ta
 
 checkLine :: [Int -> Int -> Int] -> Int -> Int -> [Int] -> Bool
 checkLine _ left target [] = left == target
-checkLine ops left target (ni : ntail) = any (\op -> checkLine ops (left `op` ni) target ntail) ops
+checkLine ops left target (ni : ntail) = (left < target) && any (\op -> checkLine ops (left `op` ni) target ntail) ops
 
 concatNums :: Int -> Int -> Int
 concatNums a b = a * 10 ^ length (show b) + b
