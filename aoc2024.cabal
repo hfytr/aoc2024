@@ -2,88 +2,60 @@ cabal-version:      3.0
 name:               aoc2024
 version:            0.1.0.0
 
-license:            BSD-3-Clause
-license-file:       LICENSE
-
 author:             fbwdw
 maintainer:         archimj@proton.me
 
 category:           Advent Of Code
 build-type:         Simple
 
--- Extra doc files to be distributed with the package, such as a CHANGELOG or a README.
-extra-doc-files:    CHANGELOG.md
-
-common warnings
+common shared-settings
     ghc-options: -Wall
+    hs-source-dirs:   src
+    default-language: GHC2021
+    build-depends:
+        base ^>=4.18.2.1,
+
 
 executable day01
-    import:           warnings
+    import:           shared-settings
     main-is:          1.hs
     build-depends:
-        base ^>=4.18.2.1,
         containers
-    hs-source-dirs:   src
-    default-language: GHC2021
 
 executable day02
-    import:           warnings
+    import:           shared-settings
     main-is:          2.hs
-    build-depends:
-        base ^>=4.18.2.1,
-    hs-source-dirs:   src
-    default-language: GHC2021
 
 executable day03
-    import:           warnings
+    import:           shared-settings
     main-is:          3.hs
-    build-depends:
-        base ^>=4.18.2.1,
-    hs-source-dirs:   src
-    default-language: GHC2021
 
 executable day04
-    import:           warnings
+    import:           shared-settings
     main-is:          4.hs
     build-depends:
-        base ^>=4.18.2.1,
         universe-base,
         array
-    hs-source-dirs:   src
-    default-language: GHC2021
 
 executable day05
-    import:           warnings
+    import:           shared-settings
     main-is:          5.hs
     build-depends:
-        base ^>=4.18.2.1,
         containers
-    hs-source-dirs:   src
-    default-language: GHC2021
 
 executable day06
-    import:           warnings
+    import:           shared-settings
     main-is:          6.hs
     build-depends:
-        base ^>=4.18.2.1,
         containers,
         array,
-    hs-source-dirs:   src
-    default-language: GHC2021
 
 executable day07
-    import:           warnings
+    import:           shared-settings
     main-is:          7.hs
-    build-depends:
-        base ^>=4.18.2.1,
-    hs-source-dirs:   src
-    default-language: GHC2021
 
 executable day08
-    import:           warnings
+    import:           shared-settings
     main-is:          8.hs
     build-depends:
-        base ^>=4.18.2.1,
         containers,
-    hs-source-dirs:   src
-    default-language: GHC2021
