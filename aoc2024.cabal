@@ -59,3 +59,9 @@ executable day08
     main-is:          8.hs
     build-depends:
         containers,
+
+executable day09
+    import:           shared-settings
+    main-is:          9.hs
+    build-depends:
+        containers,
