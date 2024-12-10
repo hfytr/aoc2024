@@ -15,7 +15,6 @@ common shared-settings
     build-depends:
         base ^>=4.18.2.1,
 
-
 executable day01
     import:           shared-settings
     main-is:          1.hs
@@ -64,4 +63,11 @@ executable day09
     import:           shared-settings
     main-is:          9.hs
     build-depends:
+        containers,
+
+executable day10
+    import:           shared-settings
+    main-is:          10.hs
+    build-depends:
+        vector,
         containers,
