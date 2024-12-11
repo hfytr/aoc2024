@@ -10,7 +10,9 @@ main :: IO ()
 main = do
   contents <- readFile "inputs/8-actual.txt"
   let (width, height, antenna) = parseInput $ lines contents
+  putStrLn "Part I:"
   print $ length $ solve (p1FreqPairAntinodes (width, height)) antenna
+  putStrLn "Part II:"
   print $ length $ solve (p2FreqPairAntinodes (width, height)) antenna
 
 solve ::

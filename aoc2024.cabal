@@ -17,51 +17,51 @@ common shared-settings
 
 executable day01
     import:           shared-settings
-    main-is:          1.hs
+    main-is:          01.hs
     build-depends:
         containers
 
 executable day02
     import:           shared-settings
-    main-is:          2.hs
+    main-is:          02.hs
 
 executable day03
     import:           shared-settings
-    main-is:          3.hs
+    main-is:          03.hs
 
 executable day04
     import:           shared-settings
-    main-is:          4.hs
+    main-is:          04.hs
     build-depends:
         universe-base,
         array
 
 executable day05
     import:           shared-settings
-    main-is:          5.hs
+    main-is:          05.hs
     build-depends:
         containers
 
 executable day06
     import:           shared-settings
-    main-is:          6.hs
+    main-is:          06.hs
     build-depends:
         containers,
         array,
 
 executable day07
     import:           shared-settings
-    main-is:          7.hs
+    main-is:          07.hs
 
 executable day08
     import:           shared-settings
-    main-is:          8.hs
+    main-is:          08.hs
     build-depends:
         containers,
 
 executable day09
     import:           shared-settings
-    main-is:          9.hs
+    main-is:          09.hs
     build-depends:
         containers,
 
