@@ -12,14 +12,12 @@ common shared-settings
     ghc-options: -Wall
     hs-source-dirs:   src
     default-language: GHC2021
-    build-depends:
-        base ^>=4.18.2.1,
+    build-depends:    base ^>=4.18.2.1,
 
 executable day01
     import:           shared-settings
     main-is:          01.hs
-    build-depends:
-        containers
+    build-depends:    containers
 
 executable day02
     import:           shared-settings
@@ -32,22 +30,17 @@ executable day03
 executable day04
     import:           shared-settings
     main-is:          04.hs
-    build-depends:
-        universe-base,
-        array
+    build-depends:    universe-base, array
 
 executable day05
     import:           shared-settings
     main-is:          05.hs
-    build-depends:
-        containers
+    build-depends:    containers
 
 executable day06
     import:           shared-settings
     main-is:          06.hs
-    build-depends:
-        containers,
-        array,
+    build-depends:    containers, array,
 
 executable day07
     import:           shared-settings
@@ -56,18 +49,19 @@ executable day07
 executable day08
     import:           shared-settings
     main-is:          08.hs
-    build-depends:
-        containers,
+    build-depends:    containers,
 
 executable day09
     import:           shared-settings
     main-is:          09.hs
-    build-depends:
-        containers,
+    build-depends:    containers,
 
 executable day10
     import:           shared-settings
     main-is:          10.hs
-    build-depends:
-        vector,
-        containers,
+    build-depends:    vector, containers
+
+executable day11
+    import:           shared-settings
+    main-is:          11.hs
+    build-depends:    containers
