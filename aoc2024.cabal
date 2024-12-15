@@ -65,3 +65,8 @@ executable day11
     import:           shared-settings
     main-is:          11.hs
     build-depends:    containers
+
+executable day12
+    import:           shared-settings
+    main-is:          12.hs
+    build-depends:    containers, vector
