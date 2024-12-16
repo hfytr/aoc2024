@@ -69,4 +69,13 @@ executable day11
 executable day12
     import:           shared-settings
     main-is:          12.hs
-    build-depends:    containers, vector
+    build-depends:    containers
+
+executable day13
+    import:           shared-settings
+    main-is:          13.hs
+
+executable day14
+    import:           shared-settings
+    main-is:          14.hs
+    build-depends:    containers
