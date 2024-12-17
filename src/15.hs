@@ -1,12 +1,13 @@
 {-# LANGUAGE LambdaCase #-}
 
+import Control.Monad (foldM)
 import Data.Array (Array, (!))
 import Data.Array qualified as Arr
 import Data.List (elemIndex)
 import Data.Maybe (fromJust)
 import Data.Set (Set)
 import Data.Set qualified as Set
-import Debug.Trace (traceShow, traceShowId, traceShowWith)
+import Debug.Trace (trace, traceShow, traceShowId, traceShowWith)
 
 type Vec2 = (Int, Int)
 
@@ -26,45 +27,72 @@ solvep2 walls initBoxes initPos allInstructions =
  where
   go :: Set Vec2 -> Vec2 -> [Vec2] -> (Set Vec2, Vec2)
   go boxes pos [] = (boxes, pos)
-  go boxes pos (ii@(0, _) : itail) = case traceShowWith ("hi",pos,boxes,) (tryMove walls boxes pos ii 2) of
-    Nothing -> go (traceShowId boxes) pos itail
-    Just d ->
-      go
-        ( traceShowWith
-            ("baz",d,pos +++ ii,pos +++ ii *** d *** 2,ii,pos,)
-            (pushBoxes boxes (pos +++ ii *** 2) ii)
-        )
-        (pos +++ ii)
-        itail
+  go boxes pos (ii@(0, _) : itail) = case trace (pprint boxes pos ii) (pushFrom boxes pos ii) of
+    Nothing -> go boxes pos itail
+    Just nextBoxes -> go nextBoxes (pos +++ ii) itail
   go boxes pos (ii : itail) =
-    if traceShow ("hi2", pos, boxes) (canMove2 boxes ii pos)
-      then go (traceShowWith ("foo",pos,ii,) (moveBoxes2 boxes pos ii)) pos itail
-      else go (traceShowWith ("bar",pos,) boxes) pos itail
-  canMove2 :: Set Vec2 -> Vec2 -> Vec2 -> Bool
-  canMove2 boxes ii pos
-    | walls ! (pos +++ ii) || walls ! (pos +++ ii +++ (0, 1)) = False
+    case trace (pprint boxes pos ii) (moveBoxes2 boxes pos ii False) of
+      Nothing -> go boxes pos itail
+      Just nextBoxes -> go nextBoxes (pos +++ ii) itail
+
+  moveBoxes2 :: Set Vec2 -> Vec2 -> Vec2 -> Bool -> Maybe (Set Vec2)
+  moveBoxes2 boxes pos dir onBox
+    | walls ! (pos +++ dir) || walls ! (pos +++ dir +++ (0, 1)) = Nothing
+    | onBox && Set.notMember pos boxes = Just boxes
     | otherwise =
         let nextBoxes =
-              [pos' | i <- [-1 .. 1], let pos' = pos +++ ii +++ (0, i), Set.member pos' boxes]
-         in null nextBoxes || all (canMove2 boxes ii) nextBoxes
-  moveBoxes2 :: Set Vec2 -> Vec2 -> Vec2 -> Set Vec2
-  moveBoxes2 boxes pos dir
-    | Set.notMember pos boxes = boxes
-    | otherwise =
-        let nextBoxes =
-              [ pos' | i <- [-1 .. 1], let pos' = pos +++ dir +++ (0, i), Set.member pos' boxes
+              [ pos' | i <- [-1 .. (if onBox then 1 else 0)], let pos' = pos +++ dir +++ (0, i), Set.member pos' boxes
               ]
-         in foldr
-              (\box acc -> moveBoxes2 acc box dir)
-              boxes
-              nextBoxes
-  pushBoxes :: Set Vec2 -> Vec2 -> Vec2 -> Set Vec2
+         in moveBox pos (pos +++ dir)
+              <$> foldM
+                (\acc box -> moveBoxes2 acc box dir True)
+                boxes
+                nextBoxes
+
+  pprint :: Set Vec2 -> Vec2 -> Vec2 -> String
+  pprint boxes pos dir =
+    foldr
+      ( \i acc ->
+          foldr
+            ( \j acc' ->
+                if Set.member (i, j) boxes
+                  then acc' ++ ['[']
+                  else
+                    if Set.member (i, j - 1) boxes
+                      then acc' ++ [']']
+                      else
+                        if walls ! (i, j)
+                          then acc' ++ ['#']
+                          else if (i, j) == pos then acc' ++ ['@'] else acc' ++ ['.']
+            )
+            acc
+            [19, 18 .. 0]
+            ++ ['\n']
+      )
+      ""
+      [9, 8 .. 0]
+      ++ [ '\n'
+         , case dir of
+            (0, -1) -> '<'
+            (-1, 0) -> '^'
+            (0, 1) -> '>'
+            (1, 0) -> 'v'
+            _ -> error ""
+         ]
+
+  pushFrom :: Set Vec2 -> Vec2 -> Vec2 -> Maybe (Set Vec2)
+  pushFrom boxes pos dir
+    | walls ! (pos +++ dir) = Nothing
+    | Set.notMember (pos +++ dir *** if snd dir < 0 then 2 else 1) boxes =
+        Just boxes
+    | otherwise = pushBoxes boxes (pos +++ dir *** if snd dir < 0 then 2 else 1) dir
+  pushBoxes :: Set Vec2 -> Vec2 -> Vec2 -> Maybe (Set Vec2)
   pushBoxes boxes pos dir
-    | snd pos < 0 = error ""
-    | Set.notMember pos boxes = boxes
+    | walls ! (pos +++ dir) || walls ! (pos +++ dir *** 2) = Nothing
+    | Set.notMember (pos +++ dir *** 2) boxes =
+        Just $ moveBox pos (pos +++ dir) boxes
     | otherwise =
-        let nextPos = traceShowWith (pos,boxes,Set.notMember pos boxes,) (pos +++ dir *** 2)
-         in moveBox pos nextPos $ pushBoxes boxes nextPos dir
+        moveBox pos (pos +++ dir) <$> pushBoxes boxes (pos +++ dir *** 2) dir
 
 solvep1 :: Array Vec2 Bool -> Set Vec2 -> Vec2 -> [Vec2] -> Int
 solvep1 walls initBoxes initPos allInstructions =
