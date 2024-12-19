@@ -84,3 +84,8 @@ executable day15
     import:           shared-settings
     main-is:          15.hs
     build-depends:    containers, array
+
+executable day16
+    import:           shared-settings
+    main-is:          16.hs
+    build-depends:    array, heap, containers
