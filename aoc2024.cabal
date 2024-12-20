@@ -94,3 +94,8 @@ executable day17
     import:           shared-settings
     main-is:          17.hs
     build-depends:    split, vector
+
+executable day18
+    import:           shared-settings
+    main-is:          18.hs
+    build-depends:    array, containers
