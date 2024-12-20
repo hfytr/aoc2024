@@ -6,19 +6,8 @@ import Data.Sequence (Seq ((:<|), (:|>)), (<|), (|>))
 import Data.Sequence qualified as Seq
 import Data.Set (Set)
 import Data.Set qualified as Set
-import Debug.Trace (traceShow, traceShowWith)
 
 type Vec2 = (Int, Int)
-
--- main :: IO ()
--- main = do
---   contents <- readFile "inputs/18-small.txt"
---   let (corrupted, grid) = parseInput 6 $ lines contents
---   print grid
---   putStrLn "Part I:"
---   print $ bfs grid 1024
---   putStrLn "Part II:"
---   print $ solvep2 corrupted grid 1024
 
 main :: IO ()
 main = do

@@ -99,3 +99,8 @@ executable day18
     import:           shared-settings
     main-is:          18.hs
     build-depends:    array, containers
+
+executable day19
+    import:           shared-settings
+    main-is:          19.hs
+    build-depends:    split, containers
