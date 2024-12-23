@@ -109,3 +109,12 @@ executable day20
     import:           shared-settings
     main-is:          20.hs
     build-depends:    array, containers
+
+executable day21
+    import:           shared-settings
+    main-is:          21.hs
+
+executable day22
+    import:           shared-settings
+    main-is:          22.hs
+    build-depends:    vector, containers
