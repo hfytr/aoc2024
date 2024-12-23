@@ -118,3 +118,8 @@ executable day22
     import:           shared-settings
     main-is:          22.hs
     build-depends:    vector, containers
+
+executable day23
+    import:           shared-settings
+    main-is:          23.hs
+    build-depends:    containers
