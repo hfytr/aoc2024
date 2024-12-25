@@ -123,3 +123,13 @@ executable day23
     import:           shared-settings
     main-is:          23.hs
     build-depends:    containers
+
+executable day24
+    import:           shared-settings
+    main-is:          24.hs
+    build-depends:    containers
+
+executable day25
+    import:           shared-settings
+    main-is:          25.hs
+    build-depends:    split
